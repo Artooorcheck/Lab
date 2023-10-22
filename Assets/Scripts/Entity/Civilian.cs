@@ -40,7 +40,7 @@ public class Civilian : Entity
     {
         if (!GetComponent<NavMeshAgent>().hasPath)
         {
-            Move(new Vector3(Random.Range(-4, 4), 0, Random.Range(-4, 4)));
+            Move(new Vector3(Random.Range(-8, 8), 0, Random.Range(-8, 8)));
         }
     }
 
