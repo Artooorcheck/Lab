@@ -1,30 +1,64 @@
-using System.Collections;
-using System.Collections.Generic;
+﻿
+using Lab.Exceptions;
+using Lab.Params;
+using System;
 using UnityEngine;
 
-public abstract class Entity : MonoBehaviour
+
+namespace Lab.Entity
 {
-    public float HP;
-
-    public float Damage;
-
-    protected bool dmg;
-
-    protected float visul = 0;
-
-    public abstract void Move(Vector3 target);
-
-    public abstract void Attack(Entity target);
-
-    public virtual void Visual()
+    class Entity : MonoBehaviour, IAttackable, IResponsable
     {
-        if(this is MeleeFighter or Civilian or Shooter)
+        public float HP { get; private set; }
+        public bool IsFree { get; private set; } = true;
+        public bool IsDestroyed { get; private set; }
+
+        public Vector3 Position => transform.position;
+
+        public event Action<IAttackable> OnDestroy;
+
+        public event Action<float> OnDamage;
+
+        public event Action<IResponsable> OnStartTask;
+        public event Action<IResponsable> OnFinishTask;
+
+        public virtual void Init(EntityParams entityParams)
         {
-            dmg = true;
-            visul = 0.3f;
-           var material =  GetComponent<MeshRenderer>().material;
-            material.color = Color.white;
-            GetComponent<MeshRenderer>().material = material;
+            HP = entityParams.HP;
+        }
+
+        public virtual void Damage(float value)
+        {
+            if(IsDestroyed)
+                return;
+
+            HP -= value;
+            OnDamage?.Invoke(value);
+            if (HP <= 0)
+            {
+                Destroy();
+            }
+        }
+
+        protected virtual void Destroy()
+        {
+            IsDestroyed = true;
+            OnDestroy?.Invoke(this);
+        }
+
+        protected void StartTask()
+        {
+            if (!IsFree)
+                throw new HasTaskException();
+
+            IsFree = false;
+            OnStartTask?.Invoke(this);
+        }
+
+        protected void FinishTask()
+        {
+            IsFree = true;
+            OnFinishTask?.Invoke(this);
         }
     }
 }

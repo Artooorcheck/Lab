@@ -1,59 +1,57 @@
-using System.Collections;
-using System.Collections.Generic;
+using Lab.AI;
+using Lab.Effects;
+using Lab.Params;
 using UnityEngine;
-using UnityEngine.AI;
 
-public class Civilian : Entity
+
+namespace Lab.Entity
 {
-    public override void Attack(Entity target)
+    [RequireComponent(typeof(Navigator), typeof(Flicker))]
+    class Civilian : Entity, IMovable, IUpdate
     {
-        throw new System.NotImplementedException();
-    }
 
-    public override void Move(Vector3 target)
-    {
-        var nma = GetComponent<NavMeshAgent>();
+        private Navigator _navigator;
+        private Flicker _flicker;
+        private EntityParams _params;
 
-        nma.SetDestination(target);
-    }
-
-
-    private void FixedUpdate()
-    {
-        if (dmg)
+        public override void Init(EntityParams entityParams)
         {
-            if (visul <= 0)
-            {
-                visul = 0;
-                dmg = false;
-                var material = GetComponent<MeshRenderer>().material;
-                material.color = new Color(0, 1, 0.08871648f, 1);
-            }
-            else
-            {
-                visul -= 0.02f;
-            }
+            base.Init(entityParams);
+            _params = entityParams;
+            _navigator = GetComponent<Navigator>();
+            _navigator.Init();
+            _flicker = GetComponent<Flicker>();
+            _flicker.Init(_params.DefaultColor, _params.FlickColor, _params.FlickTime);
+            OnDamage += (val) => _flicker.Flick();
         }
-    }
 
-    private void Update()
-    {
-        if (!GetComponent<NavMeshAgent>().hasPath)
+        public void Move(Vector3 target)
         {
-            Move(new Vector3(Random.Range(-8, 8), 0, Random.Range(-8, 8)));
+            StartTask();
+            _navigator.SetDestination(target);
+
+            _navigator.OnStopped += Complete;
+
         }
-    }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.name == "Sphere")
+        public override void Damage(float value)
         {
-            HP -= Shooter.damage;
-            Visual();
-            if (HP <= 0)
-            {
-                Destroy(gameObject);
-            }
+            if (IsDestroyed)
+                return;
+
+            base.Damage(value);
+            _flicker.Flick();
+        }
+
+        public void Complete()
+        {
+            _navigator.OnStopped -= Complete;
+            FinishTask();
+        }
+
+        public void FrameUpdate(float deltaTime)
+        {
+            _navigator.FrameUpdate(deltaTime);
         }
     }
 }
