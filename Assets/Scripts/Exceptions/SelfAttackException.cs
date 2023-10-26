@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lab.Exceptions
 {
-    class SelfAttackException : Exception
+    public class SelfAttackException : Exception
     {
         public override string Message => "Can't attack itself";
     }

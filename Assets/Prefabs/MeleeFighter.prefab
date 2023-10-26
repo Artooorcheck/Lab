@@ -17,6 +17,9 @@ GameObject:
   - component: {fileID: 3738367431413914833}
   - component: {fileID: 6900342632531259067}
   - component: {fileID: 1239476014088988893}
+  - component: {fileID: 7804086440065698122}
+  - component: {fileID: 6253811229167874534}
+  - component: {fileID: 7511439325994011794}
   m_Layer: 0
   m_Name: MeleeFighter
   m_TagString: Untagged
@@ -31,7 +34,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3738367431413914824}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.9, y: 0, z: -0.5699998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -115,6 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 839fc77437af6b64399e5d721deec61c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HP>k__BackingField: 100
 --- !u!195 &3738367431413914830
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -177,3 +181,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2001477d2fdea04aa0ee9460aa76cca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7804086440065698122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3738367431413914824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d20acee58f492847a585c2be33fee02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defaultColor: {r: 1, g: 0.0677966, b: 0, a: 1}
+  _flickColor: {r: 1, g: 1, b: 1, a: 1}
+  _flickTime: 0.2
+--- !u!114 &6253811229167874534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3738367431413914824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73dc846745248e145983eab0e4507863, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7511439325994011794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3738367431413914824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f22f8e355819124f86ff1ddd638478d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cooldown: 1
+  _damage: 10

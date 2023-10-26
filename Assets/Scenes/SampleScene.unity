@@ -1020,9 +1020,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e3298f6de0c4214dbc21e422da6381a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _civilianParams: {fileID: 11400000, guid: 8f6bc48b05fc21a4499d95d987c77d16, type: 2}
-  _meleeFighterParams: {fileID: 11400000, guid: 009a31964aa98d6499630653a13b3eba, type: 2}
-  _shooterParams: {fileID: 11400000, guid: 01801363e74a69f44869f4035cbcf321, type: 2}
 --- !u!1 &1981639773
 GameObject:
   m_ObjectHideFlags: 0
@@ -1583,10 +1580,6 @@ PrefabInstance:
     - target: {fileID: 3738367431413914824, guid: 73f804c6fe164de42a26a0ff9b936e74, type: 3}
       propertyPath: m_Name
       value: MeleeFighter
-      objectReference: {fileID: 0}
-    - target: {fileID: 3738367431413914824, guid: 73f804c6fe164de42a26a0ff9b936e74, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3738367431413914831, guid: 73f804c6fe164de42a26a0ff9b936e74, type: 3}
       propertyPath: m_RootOrder

@@ -1,37 +1,26 @@
 using UnityEngine;
-using Lab.AI;
-using Lab.Params;
-using Lab.Effects;
-using System.Collections;
 using Lab.Triggers;
 using Lab.Actions;
 using Lab.Exceptions;
 
 namespace Lab.Entity
 {
-    [RequireComponent(typeof(Navigator), typeof(AttackableTrigger), typeof(Flicker))]
-    class MeleeFighter : Entity, IAttacker, IUpdate
+    [RequireComponent(typeof(IMoveAction), typeof(AttackableTrigger), typeof(IFightAction))]
+    public class MeleeFighter : Entity, IAttacker
     {
-        private Navigator _navigator;
-        private MeleeFighterParams _params;
-        private Flicker _flicker;
-        private IAttackable _enemy;
         private AttackableTrigger _trigger;
-        private MeleeAttack _attack;
+        private IMoveAction _moveAction;
+        private IAttackable _enemy;
+        private IFightAction _attack;
 
-        public void Init(MeleeFighterParams fighterParams)
+        public override void Init()
         {
-            base.Init(fighterParams);
-            _params = fighterParams;
-            _navigator = GetComponent<Navigator>();
-            _navigator.Init();
+            base.Init();
+            _moveAction = GetComponent<IMoveAction>();
             _trigger = GetComponent<AttackableTrigger>();
             _trigger.OnEnter += EnemyOnTrigger;
             _trigger.OnExit += EnemyLeftTrigger;
-            _flicker = GetComponent<Flicker>();
-            _flicker.Init(_params.DefaultColor, _params.FlickColor, _params.FlickTime);
-            OnDamage += (val) => _flicker.Flick();
-            _attack = new MeleeAttack(fighterParams.Damage, fighterParams.Cooldown);
+            _attack = GetComponent<IFightAction>();
         }
 
         public void SetTarget(IAttackable enemy)
@@ -42,23 +31,13 @@ namespace Lab.Entity
             StartTask();
             _enemy = enemy;
             enemy.OnDestroy += FinishTask;
-            _navigator.OnStopped += Move;
-
-            Move();
+            _moveAction.StartMove(enemy);
         }
 
-        private void FinishTask(IAttackable attackable)
+        private void FinishTask(IDestroyeble destroyeble)
         {
-            _enemy = null;
+            _moveAction.ResetTarget();
             FinishTask();
-        }
-
-        private void Move()
-        {
-            if (_enemy != null)
-            {
-                _navigator.SetDestination(_enemy.Position);
-            }
         }
 
         public void EnemyOnTrigger(IAttackable attackable)
@@ -66,9 +45,8 @@ namespace Lab.Entity
             if (attackable != _enemy)
                 return;
 
-            _navigator.OnStopped -= Move;
-            _navigator.Stop();
-            _attack.Start(this, attackable);
+            _moveAction.StopMove();
+            _attack.StartFight(attackable);
         }
 
         public void EnemyLeftTrigger(IAttackable attackable)
@@ -76,9 +54,8 @@ namespace Lab.Entity
             if (attackable != _enemy)
                 return;
 
-            _attack.Stop();
-            _navigator.OnStopped += Move;
-            Move();
+            _attack.StopFight(attackable);
+            _moveAction.ContinueMove();
         }
 
         protected override void Destroy()
@@ -87,19 +64,13 @@ namespace Lab.Entity
             base.Destroy();
         }
 
-        public void FrameUpdate(float deltaTime)
-        {
-            _navigator.FrameUpdate(deltaTime);
-        }
-
         public void CancelTarget()
         {
             if (_enemy == null)
                 return;
 
             _enemy.OnDestroy -= FinishTask;
-            _navigator.Stop();
-            _enemy = null;
+            _moveAction.ResetTarget();
         }
     }
 }

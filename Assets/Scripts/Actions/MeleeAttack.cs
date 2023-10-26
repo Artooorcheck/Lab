@@ -4,27 +4,26 @@ using UnityEngine;
 
 namespace Lab.Actions
 {
-    class MeleeAttack
+    class MeleeAttack: MonoBehaviour, IFightAction
     {
-        private float _cooldown;
-        private float _damage;
-
+        [SerializeField] private float _cooldown;
+        [SerializeField] private float _damage;
 
         private bool _onAttack;
 
-        public MeleeAttack(float damage, float cooldown)
+        public MeleeAttack(MonoBehaviour attacker, float damage, float cooldown)
         {
             _damage = damage;
             _cooldown = cooldown;
         }
 
-        public void Start(MonoBehaviour attacker, IAttackable attackable)
+        public void StartFight(IAttackable attackable)
         {
             _onAttack = true;
-            attacker.StartCoroutine(Fight(attackable));
+            StartCoroutine(Fight(attackable));
         }
 
-        public void Stop()
+        public void StopFight(IAttackable attackable)
         {
             _onAttack = false;
         }

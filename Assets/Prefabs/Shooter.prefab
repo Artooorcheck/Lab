@@ -131,6 +131,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95fabebd2faca564aaac5e79d53db8ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HP>k__BackingField: 100
+  _cooldown: 4
+  _speed: 3
+  _bulletPrefab: {fileID: 8601912969819463671, guid: ab29f26dbcb37734b95baeff93a37854, type: 3}
 --- !u!114 &6723064429762438728
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,6 +159,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d20acee58f492847a585c2be33fee02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _defaultColor: {r: 0, g: 0, b: 1, a: 1}
+  _flickColor: {r: 1, g: 1, b: 1, a: 1}
+  _flickTime: 0.2
 --- !u!136 &7192745400588257747
 CapsuleCollider:
   m_ObjectHideFlags: 0

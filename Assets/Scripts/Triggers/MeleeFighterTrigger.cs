@@ -2,5 +2,5 @@
 
 namespace Lab.Triggers
 {
-    class MeleeFighterTrigger : Trigger<MeleeFighter> { }
+    public class MeleeFighterTrigger : Trigger<MeleeFighter> { }
 }

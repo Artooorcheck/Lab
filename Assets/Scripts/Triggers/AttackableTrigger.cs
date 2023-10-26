@@ -5,5 +5,5 @@ using UnityEngine;
 
 namespace Lab.Triggers
 {
-    class AttackableTrigger : Trigger<IAttackable> { }
+    public class AttackableTrigger : Trigger<IAttackable> { }
 }

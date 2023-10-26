@@ -20,5 +20,5 @@ MonoBehaviour:
   <Cooldown>k__BackingField: 4
   <BulletPrefab>k__BackingField: {fileID: 8601912969819463671, guid: ab29f26dbcb37734b95baeff93a37854, type: 3}
   <BulletParams>k__BackingField:
-    <FlightTime>k__BackingField: 0.2
+    <FlightTime>k__BackingField: 0.5
     <Damage>k__BackingField: 5

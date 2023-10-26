@@ -1,28 +1,19 @@
 using Lab.AI;
-using Lab.Effects;
-using Lab.Params;
 using UnityEngine;
 
 
 namespace Lab.Entity
 {
-    [RequireComponent(typeof(Navigator), typeof(Flicker))]
-    class Civilian : Entity, IMovable, IUpdate
+    [RequireComponent(typeof(INavigator))]
+    public class Civilian : Entity, IMovable
     {
 
-        private Navigator _navigator;
-        private Flicker _flicker;
-        private EntityParams _params;
+        private INavigator _navigator;
 
-        public override void Init(EntityParams entityParams)
+        public override void Init()
         {
-            base.Init(entityParams);
-            _params = entityParams;
-            _navigator = GetComponent<Navigator>();
-            _navigator.Init();
-            _flicker = GetComponent<Flicker>();
-            _flicker.Init(_params.DefaultColor, _params.FlickColor, _params.FlickTime);
-            OnDamage += (val) => _flicker.Flick();
+            base.Init();
+            _navigator = GetComponent<INavigator>();
         }
 
         public void Move(Vector3 target)
@@ -40,18 +31,12 @@ namespace Lab.Entity
                 return;
 
             base.Damage(value);
-            _flicker.Flick();
         }
 
         public void Complete()
         {
             _navigator.OnStopped -= Complete;
             FinishTask();
-        }
-
-        public void FrameUpdate(float deltaTime)
-        {
-            _navigator.FrameUpdate(deltaTime);
         }
     }
 }

@@ -1,27 +1,25 @@
-﻿using System.Collections;
+﻿using Lab.Entity;
+using System.Collections;
 using UnityEngine;
 
 namespace Lab.Effects
 {
     [RequireComponent(typeof(Renderer))]
-    class Flicker: MonoBehaviour
+    class Flicker: MonoBehaviour, IEffect, IInitializable
     {
         private Renderer _renderer;
 
-        private Color _defaultColor;
-        private Color _flickColor;
+        [SerializeField] private Color _defaultColor;
+        [SerializeField] private Color _flickColor;
 
-        private float _flickTime;
+        [SerializeField] private float _flickTime;
 
-        public void Init(Color defaultColor, Color flickColor, float flickTime)
+        public void Init()
         {
-            _flickTime = flickTime;
-            _defaultColor = defaultColor;
-            _flickColor = flickColor;
             _renderer = GetComponent<Renderer>();
         }
 
-        public void Flick()
+        public void Play()
         {
             var material = _renderer.material;
             material.color = _flickColor;

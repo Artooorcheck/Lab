@@ -1,26 +1,24 @@
-﻿using System;
+﻿using Lab.Entity;
+using System;
 using UnityEngine;
 
-namespace Lab.Controllers
+class EntityDestroyer
 {
-    class EntityDestroyer
+    public event Action<Entity> OnDestroyed;
+
+    public EntityDestroyer()
     {
-        public event Action<Entity.Entity> OnDestroyed;
-
-        public EntityDestroyer()
+        var entities = UnityEngine.Object.FindObjectsOfType<Entity>();
+        foreach (var entity in entities)
         {
-            var entities = UnityEngine.Object.FindObjectsOfType<Entity.Entity>();
-            foreach(var entity in entities)
-            {
-                entity.OnDestroy += (attackable) => Destroy(entity);
-            }
+            entity.OnDestroy += (attackable) => Destroy(entity);
         }
+    }
 
-        private void Destroy(Entity.Entity entity)
-        {
-            OnDestroyed?.Invoke(entity);
+    private void Destroy(Entity entity)
+    {
+        OnDestroyed?.Invoke(entity);
 
-            UnityEngine.Object.Destroy(entity.gameObject);
-        }
+        UnityEngine.Object.Destroy(entity.gameObject);
     }
 }

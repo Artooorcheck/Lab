@@ -6,14 +6,13 @@ using System;
 namespace Lab.AI
 {
     [RequireComponent(typeof(NavMeshAgent))]
-    class Navigator : MonoBehaviour
+    class Navigator : MonoBehaviour, INavigator, IInitializable, IUpdate
     {
         public bool IsStopped { get; private set; }
 
         private NavMeshAgent _navMeshAgent;
 
         public event Action OnStopped;
-
 
         public void Init()
         {
@@ -34,7 +33,8 @@ namespace Lab.AI
 
         public void FrameUpdate(float deltaTime)
         {
-            if (_navMeshAgent.hasPath && !IsStopped)
+            if (_navMeshAgent != null && _navMeshAgent.isActiveAndEnabled
+                && _navMeshAgent.hasPath && !IsStopped)
             {
                 IsStopped = true;
                 OnStopped?.Invoke();

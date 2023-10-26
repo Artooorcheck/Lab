@@ -6,28 +6,26 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Lab.Controllers
+
+class UpdateController : MonoBehaviour, IController
 {
-    class UpdateController : MonoBehaviour, IController
+    private List<IUpdate> _updates;
+
+    public void Init()
     {
-        private List<IUpdate> _updates;
+        _updates = GetComponentsInChildren<IUpdate>().ToList();
+    }
 
-        public void Init()
+    private void Update()
+    {
+        for (int i = 0; i < _updates.Count; i++)
         {
-            _updates = GetComponentsInChildren<IUpdate>().ToList();
+            _updates[i].FrameUpdate(Time.deltaTime);
         }
+    }
 
-        private void Update()
-        {
-            for(int i=0; i<_updates.Count; i++)
-            {
-                _updates[i].FrameUpdate(Time.deltaTime);
-            }
-        }
-
-        public void Remove<T>(T entity)
-        {
-            _updates.RemoveAll(a => a.Equals(entity));
-        }
+    public void Remove<T>(T entity)
+    {
+        _updates.RemoveAll(a => a.Equals(entity));
     }
 }

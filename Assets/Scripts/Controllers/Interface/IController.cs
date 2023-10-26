@@ -1,8 +1,5 @@
-﻿namespace Lab.Controllers
+﻿public interface IController
 {
-    interface IController
-    {
-        void Init();
-        void Remove<T>(T entity);
-    }
+    void Init();
+    void Remove<T>(T entity);
 }

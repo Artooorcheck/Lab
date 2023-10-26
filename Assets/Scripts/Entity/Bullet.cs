@@ -1,40 +1,38 @@
-﻿using Lab.Params;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 namespace Lab.Entity
 {
-    class Bullet : MonoBehaviour
+    public class Bullet : MonoBehaviour
     {
-        private BulletParams _params;
-        private Transform _transform;
+        [SerializeField] private float _flightTime;
+        [SerializeField] private float _damage;
 
-        public void Init(string name, BulletParams bulletParams)
+
+        public virtual void Init(string name, Vector3 target)
         {
             this.name = name;
-            _params = bulletParams;
-            _transform = transform;
-            StartCoroutine(MoveAsync());
+            StartCoroutine(MoveAsync(target));
         }
 
-        private IEnumerator MoveAsync()
+        private IEnumerator MoveAsync(Vector3 target)
         {
-            Vector3 startPosition = _transform.position;
-            for(float time = 0; time < 1; time+=Time.deltaTime)
+            Vector3 startPosition = transform.position;
+            for(float time = 0; time < 1; time+=Time.deltaTime/_flightTime)
             {
-                _transform.position = Vector3.Lerp(startPosition, _params.Target, time);
+                transform.position = Vector3.Lerp(startPosition, target, time);
                 yield return null;
             }
 
             Destroy(gameObject);
         }
 
-        private void OnTriggerEnter(Collider other)
+        protected virtual void OnTriggerEnter(Collider other)
         {
             if(other.name !=  name 
                 && other.TryGetComponent(out Entity entity))
             {
-                entity.Damage(_params.Damage);
+                entity.Damage(_damage);
                 Destroy(gameObject);
             }
         }

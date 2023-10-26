@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lab.Exceptions
 {
-    class HasTaskException : Exception
+    public class HasTaskException : Exception
     {
         public override string Message => "Last task isn't complete";
     }

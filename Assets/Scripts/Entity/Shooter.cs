@@ -1,28 +1,24 @@
-using Lab.Effects;
 using Lab.Exceptions;
-using Lab.Params;
 using Lab.Triggers;
+using System.Linq;
 using UnityEngine;
 
 
 
 namespace Lab.Entity
 {
-    [RequireComponent(typeof(MeleeFighterTrigger), typeof(Flicker))]
-    class Shooter : Entity, IAttacker, IUpdate
+    [RequireComponent(typeof(MeleeFighterTrigger))]
+    public class Shooter : Entity, IAttacker, IUpdate
     {
+        [SerializeField] private float _cooldown;
+        [SerializeField] private float _speed;
+        [SerializeField] private Bullet _bulletPrefab;
 
-        private ShooterParams _params;
-        private Flicker _flicker;
         private MeleeFighterTrigger _trigger;
 
-        public void Init(ShooterParams shooterParams)
+        public override void Init()
         {
-            base.Init(shooterParams);
-            _params = shooterParams;
-            _flicker = GetComponent<Flicker>();
-            _flicker.Init(_params.DefaultColor, _params.FlickColor, _params.FlickTime);
-            OnDamage += (val) => _flicker.Flick();
+            base.Init();
             _trigger = GetComponent<MeleeFighterTrigger>();
         }
 
@@ -33,11 +29,9 @@ namespace Lab.Entity
                 throw new SelfAttackException();
 
             StartTask();
-            var bp = _params.BulletParams;
-            bp.Target = target.Position;
-            Instantiate(_params.BulletPrefab, transform.position, Quaternion.identity)
-                .Init(name, bp);
-            Invoke(nameof(FinishTask), _params.Cooldown);
+            Instantiate(_bulletPrefab, transform.position, Quaternion.identity)
+                .Init(name, target.Position);
+            Invoke(nameof(FinishTask), _cooldown);
         }
 
         private void Dodge(Vector3 attacker, float speed)
@@ -49,7 +43,11 @@ namespace Lab.Entity
         {
             if(_trigger.Entities.Count > 0)
             {
-                Dodge(_trigger.Entities[0].Position, deltaTime * _params.Speed);
+                var entity = _trigger.Entities.FirstOrDefault(a => a != null && a.isActiveAndEnabled);
+                if (entity != null)
+                {
+                    Dodge(entity.Position, deltaTime * _speed);
+                }
             }
         }
     }
