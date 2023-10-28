@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Linq;
 
-public class MeleeFighter : Entity
+public sealed class MeleeFighter : Entity
 {
     private Entity _entity;
 
@@ -57,7 +57,7 @@ public class MeleeFighter : Entity
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out Entity entity))
         {
@@ -75,7 +75,7 @@ public class MeleeFighter : Entity
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    public void OnTriggerExit(Collider other)
     {
         if (other.TryGetComponent(out Entity entity) && entity == _entity)
         {

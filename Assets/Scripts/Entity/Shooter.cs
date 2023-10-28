@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Shooter : Entity
+public class Shooter : Entity //single-responsibility principie
 {
     public static float damage = 3;
 
@@ -49,7 +49,7 @@ public class Shooter : Entity
                 if (GameObject.activeSelf)
                 {
                     t = t + 0.04f;
-                    GameObject.transform.position = Vector3.Lerp(pos, pos2, t) + Vector3.up * Mathf.Sin(t * Mathf.PI);
+                    GameObject.transform.position = Vector3.Lerp(pos, pos2, t);
                 }
                 else
                 {
@@ -108,9 +108,13 @@ public class Shooter : Entity
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out MeleeFighter entity))
+        if (other.TryGetComponent(out MeleeFighter entity)) //Dependency Inversion principie
         {
             Move(entity.transform.position);
+        }
+        if (other.TryGetComponent(out Shooter shooter))
+        {
+            Move(shooter.transform.position);
         }
 
         if (other.name == "Sphere" && GameObject != other.gameObject)
