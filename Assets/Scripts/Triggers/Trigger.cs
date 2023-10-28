@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Lab.Triggers
 {
-    public class Trigger<T> : MonoBehaviour
+    public class Trigger<T> : MonoBehaviour, ITrigger<T>
     {
         private List<T> _entities = new List<T>();
 

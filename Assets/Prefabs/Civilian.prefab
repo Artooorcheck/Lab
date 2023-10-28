@@ -179,5 +179,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _defaultColor: {r: 0, g: 1, b: 0.18480778, a: 1}
-  _flickColor: {r: 1, g: 1, b: 1, a: 1}
+  _flickColor: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
   _flickTime: 0.2

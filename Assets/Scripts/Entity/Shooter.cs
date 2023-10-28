@@ -1,25 +1,26 @@
 using Lab.Exceptions;
 using Lab.Triggers;
+using Lab.Extentions;
 using System.Linq;
 using UnityEngine;
 
 
-
 namespace Lab.Entity
 {
-    [RequireComponent(typeof(MeleeFighterTrigger))]
-    public class Shooter : Entity, IAttacker, IUpdate
+    [RequireComponent(typeof(ITrigger<Entity>))]
+    public class Shooter : Entity, IAttacker, IUpdate, IInitializable
     {
         [SerializeField] private float _cooldown;
         [SerializeField] private float _speed;
         [SerializeField] private Bullet _bulletPrefab;
 
-        private MeleeFighterTrigger _trigger;
+        private ITrigger<Entity> _trigger;
 
         public override void Init()
         {
             base.Init();
-            _trigger = GetComponent<MeleeFighterTrigger>();
+            _trigger = (ITrigger<Entity>)GetComponents<MonoBehaviour>()
+                .First(a=>a is ITrigger<Entity>);
         }
 
 
